@@ -1,0 +1,212 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 100dvh;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#video-container {
+    flex: 1;
+    position: relative;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Четыре отдельных уголка — как рамка для QR-кода */
+.corner {
+    position: absolute;
+    z-index: 5;
+    width: 32px;
+    height: 32px;
+    border: 3px solid #bb86fc; /* Фиолетовый акцент (Material Design) */
+}
+
+/* Верхний левый угол */
+.corner.top-left {
+    top: 50%;
+    left: 50%;
+    transform: translate(-130%, -130%);
+    border-right: none;
+    border-bottom: none;
+}
+
+/* Верхний правый угол */
+.corner.top-right {
+    top: 50%;
+    right: 50%;
+    transform: translate(130%, -130%);
+    border-left: none;
+    border-bottom: none;
+}
+
+/* Нижний левый угол */
+.corner.bottom-left {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-130%, 130%);
+    border-right: none;
+    border-top: none;
+}
+
+/* Нижний правый угол */
+.corner.bottom-right {
+    bottom: 50%;
+    right: 50%;
+    transform: translate(130%, 130%);
+    border-left: none;
+    border-top: none;
+}
+
+/* Панель статуса и кнопок внизу */
+#status-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ccc;
+    padding: 14px 20px;
+    text-align: center;
+    border-top: 1px solid #333;
+    z-index: 1000;
+    font-size: 14px;
+}
+
+#status {
+    font-size: 15px;
+    font-weight: 500;
+    color: #bb86fc;
+    margin-bottom: 6px;
+}
+
+#last-url {
+    word-break: break-all;
+    font-size: 12px;
+    color: #aaa;
+    max-height: 3em;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+}
+
+#control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+button {
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 110px;
+    letter-spacing: 0.5px;
+    font-family: inherit;
+}
+
+#startBtn {
+    background: #bb86fc;
+    color: #000;
+    font-weight: 600;
+}
+
+#startBtn:hover:not(:disabled) {
+    background: #d0a6ff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(187, 134, 252, 0.3);
+}
+
+#startBtn:disabled {
+    background: #8a5ac2;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#stopBtn {
+    background: #333;
+    color: #ccc;
+}
+
+#stopBtn:hover:not(:disabled) {
+    background: #444;
+    transform: translateY(-1px);
+}
+
+#stopBtn:disabled {
+    background: #222;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Адаптация под маленькие экраны */
+@media (max-height: 700px) {
+    .corner {
+        width: 28px;
+        height: 28px;
+        border-width: 2.5px;
+    }
+
+    .corner.top-left,
+    .corner.top-right,
+    .corner.bottom-left,
+    .corner.bottom-right {
+        transform: translate(-120%, -120%) scale(0.9);
+    }
+
+    #status-panel {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    button {
+        padding: 10px 22px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .corner {
+        width: 100px;
+        height: 100px;
+        border-width: 2px;
+    }
+
+    #control-buttons {
+        gap: 12px;
+    }
+
+    button {
+        padding: 10px 20px;
+        min-width: 100px;
+    }
+}

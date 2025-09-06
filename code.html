@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Последняя сканированная ссылка</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #bb86fc;
+            margin-bottom: 20px;
+        }
+
+        .url-display {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 600px;
+            word-break: break-all;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .url-link {
+            font-size: 18px;
+            color: #00ccff;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin: 10px 0;
+            transition: color 0.2s;
+        }
+
+        .url-link:hover {
+            color: #00ffff;
+            text-decoration: underline;
+        }
+
+        .timestamp {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .status {
+            font-size: 14px;
+            color: #999;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Последняя сканированная ссылка</h1>
+
+    <div class="url-display">
+        <a href="#" id="url-link" class="url-link" target="_blank">Еще не сканировано</a>
+        <div class="timestamp" id="timestamp"></div>
+        <div class="status" id="status">Ожидание данных...</div>
+    </div>
+
+    <script>
+        function updateUrl() {
+            fetch('/api/last-url')
+                .then(response => response.json())
+                .then(data => {
+                    const urlLink = document.getElementById('url-link');
+                    const timestampEl = document.getElementById('timestamp');
+                    const statusEl = document.getElementById('status');
+
+                    if (data.url) {
+                        urlLink.href = data.url;
+                        urlLink.textContent = data.url;
+                        urlLink.style.display = 'block';
+                        statusEl.textContent = '';
+
+                        if (data.timestamp) {
+                            const date = new Date(data.timestamp);
+                            timestampEl.textContent = 'Сканировано: ' + date.toLocaleString();
+                        } else {
+                            timestampEl.textContent = 'Время неизвестно';
+                        }
+                    } else {
+                        urlLink.href = '#';
+                        urlLink.textContent = 'Еще не сканировано';
+                        urlLink.style.display = 'block';
+                        timestampEl.textContent = '';
+                        statusEl.textContent = 'QR-код ещё не был отсканирован';
+                    }
+                })
+        }
+
+        updateUrl();
+        setInterval(updateUrl, 500);
+    </script>
+</body>
+
+</html>
